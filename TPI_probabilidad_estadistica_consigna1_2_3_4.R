@@ -223,6 +223,14 @@ cat("Cuartiles (categorías):\n"); print(cuartiles_sat_labels)
 
 # Histograma de horas de estudio
 #Creamos un histograma de horas de estudio usando ggplot2
+# data.frame transforma el vector en un data frame y ggplot puede leer
+#aes indica que el eje x seran la horas
+#geo_histogram dibuja las barras
+#after_stat normalizala sbarras que representen densidad
+#bins indica cuantas barras habra
+#fill indica color relleno y borde
+#geom_density agraga lineas de densidad
+#labs para los titulos y nombres de los ejes
 ggplot(data.frame(horas), aes(x = horas)) +
   geom_histogram(aes(y = after_stat(density)), bins = k, fill = "skyblue", color = "black") +
   geom_density(color = "red", linewidth = 1) +
@@ -254,6 +262,7 @@ ggplot(tabla_sat, aes(x = "", y = porc, fill = Categoria)) +
     "Muy insatisfecho" = "red")) +
   theme_void()
   
+
 
 
 
