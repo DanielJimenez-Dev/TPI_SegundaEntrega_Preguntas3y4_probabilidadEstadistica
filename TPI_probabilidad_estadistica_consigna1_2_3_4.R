@@ -182,17 +182,18 @@ tabla_sat$Categoria <- reorder(tabla_sat$Categoria, -tabla_sat$porc)
 ######################################################
 
 # Horas de estudio
-horas <- x
+horas <- x #Definismo la variable hora, x es un vector con los valores de los datos$horaestudio
 
-media_horas <- mean(horas)
-mediana_horas <- median(horas)
-moda_horas <- as.numeric(names(which.max(table(horas))))
-cuartiles_horas <- quantile(horas, probs = c(0.25, 0.5, 0.75))
-rango_horas <- max(horas) - min(horas)
-varianza_horas <- var(horas)
-desvio_horas <- sd(horas)
-cv_horas <- (desvio_horas / media_horas) * 100
+media_horas <- mean(horas) #Calculamos aritmetica con las horas de estudio
+mediana_horas <- median(horas) # Calculamos la mediana
+moda_horas <- as.numeric(names(which.max(table(horas)))) #Calculamos la moda, el valor qu emas se repite.
+cuartiles_horas <- quantile(horas, probs = c(0.25, 0.5, 0.75)) # Calculamos los cuartiles, los valores que dividen los datos
+rango_horas <- max(horas) - min(horas) #Calculamos rango que es la diferencia entre el valor maximo y minimo.
+varianza_horas <- var(horas) # Calculamos la varianza que indica que tan dispersos estan respecto a la media.
+desvio_horas <- sd(horas) #Calculamos el desvio de las horas seria la raiz cuadrada de la varianza.
+cv_horas <- (desvio_horas / media_horas) * 100 # Calculamos el coeficiente de variacion en %
 
+#Mostramos los resultados en consola
 cat("\n--- Medidas descriptivas: Horas de estudio ---\n")
 cat("Media:", round(media_horas, 2), "\n")
 cat("Mediana:", round(mediana_horas, 2), "\n")
@@ -204,11 +205,13 @@ cat("Desvío estándar:", round(desvio_horas, 2), "\n")
 cat("Coef. Variación (%):", round(cv_horas, 2), "\n")
 
 # Nivel de satisfacción
-moda_sat <- names(which.max(table(sat)))
-mediana_sat <- levels(sat)[median(as.numeric(sat))]
-cuartiles_sat <- quantile(as.numeric(sat), probs = c(0.25, 0.5, 0.75))
+moda_sat <- names(which.max(table(sat))) # Calculamos la moda de la satisfaccion (sat)
+mediana_sat <- levels(sat)[median(as.numeric(sat))] #Calculamos mediana con sat como sat es un valor primero 
+# se convierte a numero (as.numeric) luego usamos la mediana y finalmente volvemos a la categoria inicial levels()
+cuartiles_sat <- quantile(as.numeric(sat), probs = c(0.25, 0.5, 0.75)) #Calculamos cuartiles de sat, se hace igual que la media
 cuartiles_sat_labels <- levels(sat)[cuartiles_sat]
 
+#Mostramos los resultados en consola
 cat("\n--- Medidas descriptivas: Satisfacción con la carrera ---\n")
 cat("Moda:", moda_sat, "\n")
 cat("Mediana:", mediana_sat, "\n")
@@ -219,6 +222,7 @@ cat("Cuartiles (categorías):\n"); print(cuartiles_sat_labels)
 ##########################################################################
 
 # Histograma de horas de estudio
+#Creamos un histograma de horas de estudio usando ggplot2
 ggplot(data.frame(horas), aes(x = horas)) +
   geom_histogram(aes(y = after_stat(density)), bins = k, fill = "skyblue", color = "black") +
   geom_density(color = "red", linewidth = 1) +
@@ -229,6 +233,14 @@ ggplot(data.frame(horas), aes(x = horas)) +
   )
 
 # Diagrama circular de satisfacción
+# Creamos diagrama circular, mostramos el nivel de satisfacción.
+#Tabla_sat es un frame con las categorias y %
+#aes indican que las barras representan porcentaje y se colorean segun categoria
+#geom_col dibuja las barras en grafico
+#coord_polar convierte el grafico en barra de circulo
+#geo_tex agrega los porcentajes
+#sacale_fill define los colores personalizados
+#theme_void elimina ejes y cuadriculas para que se vea limpio.
 ggplot(tabla_sat, aes(x = "", y = porc, fill = Categoria)) +
   geom_col(width = 1, color = "black") +
   coord_polar(theta = "y") +
@@ -242,6 +254,7 @@ ggplot(tabla_sat, aes(x = "", y = porc, fill = Categoria)) +
     "Muy insatisfecho" = "red")) +
   theme_void()
   
+
 
 
 
